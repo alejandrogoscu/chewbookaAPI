@@ -62,7 +62,7 @@ const UserController = {
       if (user.tokens.length > 4) user.tokens.shift();
       user.tokens.push(token);
       await user.save();
-      res.status(200).send({ msg: `Bienvenid@ ${user.username}`, user });
+      res.status(200).send({ msg: `Bienvenid@ ${user.username}`, user, token });
     } catch (error) {
       console.error(error);
       res.status(500).send('Error en el login');

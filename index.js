@@ -11,8 +11,8 @@ const cors = require('cors');
 dbConnection();
 
 // MIDDLEWARE
-app.use(cors());
 app.use(express.json());
+app.use(cors());
 
 // ENDPOINTS
 app.use('/users', require('./routes/users'));
