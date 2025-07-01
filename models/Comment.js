@@ -17,10 +17,4 @@ const CommentSchema = new Schema(
   { timestamps: true }
 );
 
-CommentSchema.methods.toJSON = function () {
-  const comment = this._doc;
-  delete comment.__v;
-  return comment;
-};
-
 module.exports = mongoose.model('Comment', CommentSchema);
