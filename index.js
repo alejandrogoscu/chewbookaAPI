@@ -1,5 +1,4 @@
 require('dotenv').config();
-require('cors');
 const express = require('express');
 const { dbConnection } = require('./config/config');
 const { handleTypeError } = require('./middlewares/errors');
@@ -7,6 +6,7 @@ const app = express();
 const PORT = process.env.PORT;
 const swaggerUI = require('swagger-ui-express');
 const docs = require('./docs/index');
+const cors = require('cors');
 
 dbConnection();
 
