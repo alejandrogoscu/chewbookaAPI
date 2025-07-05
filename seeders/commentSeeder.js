@@ -41,6 +41,12 @@ const commentSeeder = async () => {
     }
     const insertedComments = await Comment.insertMany(commentsToInsert);
 
+    for (const comment of insertedComments) {
+      await Post.findByIdAndUpdate(comment.post, {
+        $push: { comments: comment._id },
+      });
+    }
+
     console.log(`✅ Comentarios creados: ${insertedComments.length}`);
 
     process.exit(0);
