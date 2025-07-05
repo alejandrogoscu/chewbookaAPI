@@ -1,6 +1,7 @@
 require('dotenv').config();
 const User = require('../models/User');
 const Post = require('../models/Post');
+const Comment = require('../models/Comment');
 const bcrypt = require('bcryptjs');
 const JWT_SECRET = process.env.JWT_SECRET;
 const jwt = require('jsonwebtoken');
@@ -62,7 +63,16 @@ const UserController = {
       if (user.tokens.length > 4) user.tokens.shift();
       user.tokens.push(token);
       await user.save();
-      res.status(200).send({ msg: `Bienvenid@ ${user.username}`, user, token });
+
+      // Buscar posts del usuario y poblar los comentarios (solo id y texto del comentario)
+      const posts = await Post.find({ author: user._id }).select('title content images createdAt comments');
+      /* .populate({ path: 'comments', select: 'comment author createdAt' }); */
+
+      // Buscar comentarios del usuario y poblar el post (solo título)
+      const comments = await Comment.find({ author: user._id }).select('comment post createdAt');
+      /* .populate({ path: 'post', select: 'title' }); */
+
+      res.status(200).send({ msg: `Bienvenid@ ${user.username}`, user, posts, comments, token });
     } catch (error) {
       console.error(error);
       res.status(500).send('Error en el login');
