@@ -118,9 +118,11 @@ const UserController = {
     try {
       const token = req.headers.authorization?.replace('Bearer ', '');
       const payload = jwt.verify(token, JWT_SECRET);
-      const user = await User.findById(payload._id).populate('followers', 'username');
+      const user = await User.findById(payload._id).populate('followers', 'username').populate('following', 'username');
       const posts = await Post.find({ author: user._id }).select('title content images createdAt');
-      res.status(200).send({ user, posts });
+      res
+        .status(200)
+        .send({ user, posts, followersCount: user.followers.length, followingCount: user.following.length });
     } catch (error) {
       res.status(500).send('Ha habido un problema al buscar usuari@');
     }
