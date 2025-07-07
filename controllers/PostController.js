@@ -28,9 +28,9 @@ const PostController = {
 
   async getAll(req, res) {
     try {
-      const page = parseInt(req.query.page) || 1;
-      const limit = 10;
-      const skip = (page - 1) * limit;
+      // const page = parseInt(req.query.page) || 1;
+      // const limit = 10;
+      // const skip = (page - 1) * limit;
 
       const posts = await Post.find()
         .populate('author', 'username image')
@@ -43,9 +43,9 @@ const PostController = {
           },
         })
 
-        .sort({ createdAt: -1 })
-        .skip(skip)
-        .limit(limit);
+        // .sort({ createdAt: -1 })
+        // .skip(skip)
+        // .limit(limit);
 
       const total = await Post.countDocuments();
 
