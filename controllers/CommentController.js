@@ -35,9 +35,9 @@ const CommentController = {
   async getAll(req, res) {
     try {
       const comments = await Comment.find()
-        .populate('author', 'username')
+        .populate('author', 'username image')
         .populate('post', 'title')
-        .populate('likes', 'username');
+        .populate('likes', 'username image');
 
       res.status(200).send(comments);
     } catch (error) {
@@ -51,8 +51,8 @@ const CommentController = {
       const postId = req.params.postId;
 
       const comments = await Comment.find({ post: postId })
-        .populate('author', 'username')
-        .populate('likes', 'username')
+        .populate('author', 'username image')
+        .populate('likes', 'username image')
         .sort({ createdAt: -1 });
 
       res.status(200).send(comments);

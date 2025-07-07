@@ -33,13 +33,13 @@ const PostController = {
       const skip = (page - 1) * limit;
 
       const posts = await Post.find()
-        .populate('author', 'username email')
-        .populate('likes', 'username')
+        .populate('author', 'username image')
+        .populate('likes', 'username image')
         .populate({
           path: 'comments',
           populate: {
             path: 'author',
-            select: 'username',
+            select: 'username image',
           },
         })
 
@@ -64,13 +64,13 @@ const PostController = {
   async getById(req, res) {
     try {
       const post = await Post.findById(req.params._id)
-        .populate('author', 'username email')
-        .populate('likes', 'username')
+        .populate('author', 'username image')
+        .populate('likes', 'username image')
         .populate({
           path: 'comments',
           populate: {
             path: 'author',
-            select: 'username',
+            select: 'username image',
           },
         });
 
@@ -95,7 +95,9 @@ const PostController = {
 
       const name = new RegExp(title, 'i');
 
-      const posts = await Post.find({ title: name }).select('author title content').populate('author', 'username');
+      const posts = await Post.find({ title: name })
+        .select('author title content images')
+        .populate('author', 'username image');
 
       res.status(200).send(posts);
     } catch (error) {
