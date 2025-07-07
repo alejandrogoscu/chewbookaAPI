@@ -87,7 +87,7 @@ const PostController = {
 
   async searchByTitle(req, res) {
     try {
-      const { title } = req.query;
+      const { title } = req.params;
 
       if (!title) {
         return res.status(400).send({ message: 'Debes proporcionar un título para buscar.' });
