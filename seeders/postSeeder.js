@@ -45,7 +45,7 @@ const postSeeders = async () => {
 
         // 50% de probabilidad de tener imagen
         if (Math.random() < 0.4) {
-          post.images = [images[Math.floor(Math.random() * images.length)]];
+          post.image = images[Math.floor(Math.random() * images.length)];
         }
 
         posts.push(post);
