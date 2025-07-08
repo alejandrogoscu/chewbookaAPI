@@ -1,16 +1,13 @@
 const multer = require('multer');
 const path = require('path');
+const express = require('express');
 
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    const type = req.baseUrl.includes('users') ? 'users' : req.baseUrl.includes('comments') ? 'comments' : 'posts';
-
-    cb(null, `uploads/${type}`);
+  destination: (req, file, cb) => {
+    cb(null, 'uploads');
   },
-  filename: function (req, file, cb) {
-    const ext = path.extname(file.originalname);
-    const uniqueName = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    cb(null, uniqueName + ext);
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
   },
 });
 

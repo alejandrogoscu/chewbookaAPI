@@ -4,7 +4,7 @@ const PostController = require('../controllers/PostController');
 const { authentication, isAuthorPost } = require('../middlewares/authentication');
 const upload = require('../middlewares/upload');
 
-router.post('/', authentication, upload.single('images'), PostController.create);
+router.post('/', authentication, upload.single('image'), PostController.create);
 router.get('/', PostController.getAll);
 router.get('/title/:title', PostController.searchByTitle);
 router.get('/id/:_id', PostController.getById);

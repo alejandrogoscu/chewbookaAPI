@@ -3,25 +3,23 @@ const Post = require('../models/Post');
 const PostController = {
   async create(req, res) {
     try {
-      const { title, content, images } = req.body;
-      const author = req.user._id;
-
-      const imagePath = req.file ? req.file.path : null;
-
-      if (!title || !content || !author) {
-        return res.status(400).send({ message: 'El título, el contenido y el autor son obligatorios.' });
+      if (!req.body.title || !req.body.content) {
+        return res.status(400).send({ message: 'Título y contenido son requeridos' });
       }
 
-      const post = await Post.create({
-        title,
-        content,
-        images: imagePath,
-        author,
+      const imagePath = req.file ? req.file.filename : null;
+
+      let post = await Post.create({
+        ...req.body,
+        image: imagePath, // Cambiado: tu modelo espera string, no array
+        author: req.user._id,
       });
+
+      post = await post.populate('author', 'name image');
 
       res.status(201).send(post);
     } catch (error) {
-      console.error(error);
+      console.log('Error completo:', error); // Agregué log del error completo
       res.status(500).send({ message: 'Ha habido un problema al crear el post' });
     }
   },
@@ -42,17 +40,16 @@ const PostController = {
             select: 'username image',
           },
         })
+        .sort({ createdAt: -1 });
+      // .skip(skip)
+      // .limit(limit);
 
-        // .sort({ createdAt: -1 })
-        // .skip(skip)
-        // .limit(limit);
-
-      const total = await Post.countDocuments();
+      /* const total = await Post.countDocuments(); */
 
       res.status(200).send({
-        page,
+        /* page,
         totalPages: Math.ceil(total / limit),
-        total,
+        total, */
         posts,
       });
     } catch (error) {

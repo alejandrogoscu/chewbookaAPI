@@ -7,12 +7,14 @@ const PORT = process.env.PORT;
 const swaggerUI = require('swagger-ui-express');
 const docs = require('./docs/index');
 const cors = require('cors');
+const path = require('path');
 
 dbConnection();
 
 // MIDDLEWARE
 app.use(express.json());
 app.use(cors());
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // ENDPOINTS
 app.use('/users', require('./routes/users'));
