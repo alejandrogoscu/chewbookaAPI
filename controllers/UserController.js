@@ -119,7 +119,9 @@ const UserController = {
       const token = req.headers.authorization?.replace('Bearer ', '');
       const payload = jwt.verify(token, JWT_SECRET);
       const user = await User.findById(payload._id).populate('followers', 'username').populate('following', 'username');
-      const posts = await Post.find({ author: user._id }).select('title content images createdAt');
+      const posts = await Post.find({ author: user._id })
+        .select('title content images createdAt author')
+        .populate('author', 'username image');
       res
         .status(200)
         .send({ user, posts, followersCount: user.followers.length, followingCount: user.following.length });
